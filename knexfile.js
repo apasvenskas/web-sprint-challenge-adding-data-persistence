@@ -10,7 +10,7 @@ module.exports = {
   development: {
     ...sharedConfig,
     connection: { filename: './data/database.db3' },
-    seeds: { directory: './data/seeds' },
+    seeds: { directory: './data/seed/project-data' },
   },
   testing: {
     ...sharedConfig,
