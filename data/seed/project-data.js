@@ -17,7 +17,7 @@ const project = [
   ];
   
 
-  const resource = [
+  const resources = [
     {
       resource_name: 'Codecademy',
       resource_description: 'An online platform that offers interactive courses on various programming languages and technologies'
@@ -80,7 +80,7 @@ const project = [
   
   exports.seed = async function (knex) {
     await knex("project").insert(project);
-    await knex("resource").insert(resource);
-    await knex("steps").insert(task);
+    await knex("resources").insert(resources);
+    await knex("task").insert(task);
   };
   
