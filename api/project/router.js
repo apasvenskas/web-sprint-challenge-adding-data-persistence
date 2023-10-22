@@ -3,7 +3,7 @@ const express = require("express");
 // const router = express.Router();
 const router = express.Router();
 
-const Project = require("./model");
+const {getProjects, addProject} = require("./model");
 router.use(express.json());
 
 router.post("/api/projects", async (req, res) => {
@@ -14,7 +14,7 @@ router.post("/api/projects", async (req, res) => {
       throw new Error("Please provide a project name");
     } else {
       project.project_completed = project.project_completed ? 1 : 0;
-      const ids = await Project("projects").insert(project);
+      const ids = await addProject("projects").insert(project);
       res.status(201).json([{ project_id: ids[0], ...project }]);
     }
   } catch (err) {
@@ -23,7 +23,7 @@ router.post("/api/projects", async (req, res) => {
 });
 
 router.get("/api/projects", (req, res) => {
-  Project("projects")
+  getProjects("projects")
     .then(projects => {
       projects = projects.map(project => ({
         ...project,

@@ -1,3 +1,7 @@
+const knex = require('knex');
+const config = require('../../knexfile');
+const db = knex(config.development);
+
 const project = [
     {
       project_name: 'Build a website',
@@ -33,54 +37,54 @@ const project = [
   ];
   
  
-  const task = [
+  const tasks = [
     {
       task_description: 'Create a HTML file',
       task_notes: 'Use semantic elements and follow the best practices',
       task_completed: true,
-      project_id: 1 // this refers to the first project in the project table
+      project_id: 1 
     },
     {
       task_description: 'Create a CSS file',
       task_notes: 'Use classes and ids to style the elements',
       task_completed: false,
-      project_id: 1 // this refers to the first project in the project table
+      project_id: 1 
     },
     {
       task_description: 'Create a JavaScript file',
       task_notes: 'Use DOM manipulation and event listeners to add interactivity',
       task_completed: false,
-      project_id: 1 // this refers to the first project in the project table
+      project_id: 1 
     },
     {
       task_description: 'Complete the React course on Codecademy',
       task_notes: 'Learn about components, props, state, hooks, and routing',
       task_completed: true,
-      project_id: 2 // this refers to the second project in the project table
+      project_id: 2 
     },
     {
       task_description: 'Build a simple React app',
       task_notes: 'Use create-react-app to bootstrap a new app and deploy it on Netlify',
       task_completed: false,
-      project_id: 2 // this refers to the second project in the project table
+      project_id: 2 
     },
     {
       task_description: 'Outline the main points of the blog post',
       task_notes: 'Think about what you want to share and why it is important',
       task_completed: true,
-      project_id: 3 // this refers to the third project in the project table
+      project_id: 3 
     },
     {
       task_description: 'Write the first draft of the blog post',
       task_notes: 'Use clear and concise language and provide examples and screenshots if possible',
       task_completed: false,
-      project_id: 3 // this refers to the third project in the project table
+      project_id: 3 
     },
   ];
   
-  exports.seed = async function (knex) {
-    await knex("project").insert(project);
-    await knex("resources").insert(resources);
-    await knex("task").insert(task);
+  exports.seed = async function () {
+    await db("project").insert(project);
+    await db("resources").insert(resources);
+    await db("tasks").insert(tasks);
   };
   

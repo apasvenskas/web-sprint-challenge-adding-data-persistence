@@ -1,12 +1,19 @@
 // build your server here and require it from index.js
+const checkRouter = require('./project/middleware')
+const projectrouter = require('./project/router')
+const resourceRouter = require('./resource/router')
+const taskRouter = require('./task/router')
+
 const express = require('express')
-const router = require('./project/router')
 
 const server = express()
 
 server.use(express.json())
 
-server.use(router)
+server.use('/api/projects', checkRouter, projectrouter)
+server.use('/api/projects', projectrouter)
+server.use('/api/resources', resourceRouter)
+server.use('/api/tasks', taskRouter)
 
 server.use('*', (req, res) => {
     res.json({api: 'Server is running'})
