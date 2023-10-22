@@ -6,7 +6,23 @@ const router = express.Router();
 const {getProjects, addProject} = require("./model");
 router.use(express.json());
 
-router.post("/api/projects", async (req, res) => {
+router.get("/", (req, res) => {
+  getProjects()
+    .then(projects => {
+      projects = projects.map(project => ({
+        ...project,
+        project_completed:!!project.project_completed,
+      }));
+      res.status(200).json(projects);
+    })
+    .catch(err => {
+      console.error('Error object', err);
+      res.status(500).json({ message: "Error getting the projects" });
+    });
+});
+
+
+router.post("/", async (req, res) => {
   const project = req.body;
   try {
     if (!project.project_name) {
@@ -22,19 +38,5 @@ router.post("/api/projects", async (req, res) => {
   }
 });
 
-router.get("/api/projects", (req, res) => {
-  getProjects("projects")
-    .then(projects => {
-      projects = projects.map(project => ({
-        ...project,
-        project_completed: !!project.project_completed,
-      }));
-      res.status(200).json(projects);
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ message: "Error getting the projects" });
-    });
-});
 
 module.exports = router;
