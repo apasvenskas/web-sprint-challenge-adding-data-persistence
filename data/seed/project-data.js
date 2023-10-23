@@ -2,7 +2,7 @@ const knex = require('knex');
 const config = require('../../knexfile');
 const db = knex(config.development);
 
-const project = [
+const projects = [
     {
       project_name: 'Build a website',
       project_description: 'Create a personal portfolio website using HTML, CSS and JavaScript',
@@ -83,7 +83,7 @@ const project = [
   ];
   
   exports.seed = async function () {
-    await db("project").insert(project);
+    await db("projects").insert(projects);
     await db("resources").insert(resources);
     await db("tasks").insert(tasks);
   };

@@ -7,13 +7,15 @@ const {getProjects, addProject} = require("./model");
 router.use(express.json());
 
 router.get("/", (req, res) => {
+  console.log('projects before')
   getProjects()
     .then(projects => {
-      projects = projects.map(project => ({
+      console.log('Projects after', projects)
+      let finalProjects = projects.map(project => ({
         ...project,
-        project_completed:!!project.project_completed,
+        project_completed:!!projects.project_completed,
       }));
-      res.status(200).json(projects);
+      res.status(200).json(finalProjects);
     })
     .catch(err => {
       console.error('Error object', err);
@@ -23,15 +25,15 @@ router.get("/", (req, res) => {
 
 
 router.post("/", async (req, res) => {
-  const project = req.body;
+  const newProject = req.body;
   try {
-    if (!project.project_name) {
+    if (!newProject.project_name) {
       // res.status(400).json({message: 'Please provide a project name'});
       throw new Error("Please provide a project name");
     } else {
-      project.project_completed = project.project_completed ? 1 : 0;
-      const ids = await addProject("projects").insert(project);
-      res.status(201).json([{ project_id: ids[0], ...project }]);
+      newProject.project_completed = newProject.project_completed ? 1 : 0;
+      const ids = await addProject("projects").insert(newProject);
+      res.status(201).json([{ project_id: ids[0], ...newProject }]);
     }
   } catch (err) {
     res.status(400).json({ message: err.message });
