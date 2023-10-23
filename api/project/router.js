@@ -27,16 +27,13 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
   const newProject = req.body;
   try {
-    if (!newProject.project_name) {
-      // res.status(400).json({message: 'Please provide a project name'});
-      throw new Error("Please provide a project name");
-    } else {
-      newProject.project_completed = newProject.project_completed ? 1 : 0;
-      const ids = await addProject("projects").insert(newProject);
-      res.status(201).json([{ project_id: ids[0], ...newProject }]);
-    }
+    if (typeof newProject.project_completed === "boolean") {
+      newProject.project_completed = Number(newProject.project_completed);
+    } 
+    const project = await addProject(newProject);
+    res.status(201).json([project])
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
