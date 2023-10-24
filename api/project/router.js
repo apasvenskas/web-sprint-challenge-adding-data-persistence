@@ -1,16 +1,15 @@
 // build your `/api/projects` router here
 const express = require("express");
-// const router = express.Router();
 const router = express.Router();
 
 const {getProjects, addProject} = require("./model");
 router.use(express.json());
 
+const checkRouter = require('./middleware')
+
 router.get("/", (req, res) => {
-  console.log('projects before')
   getProjects()
     .then(projects => {
-      console.log('Projects after', projects)
       let finalProjects = projects.map(project => ({
         ...project,
         project_completed:!!projects.project_completed,
@@ -27,15 +26,19 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
   const newProject = req.body;
   try {
-    if (typeof newProject.project_completed === "boolean") {
-      newProject.project_completed = Number(newProject.project_completed);
-    } 
+    if (typeof newProject.project_completed === "number") {
+      newProject.project_completed = Boolean(newProject.project_completed)
+    } else {
+      newProject.project_completed = false;
+    }
     const project = await addProject(newProject);
     res.status(201).json([project])
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
+
+router.use(checkRouter)
 
 
 module.exports = router;

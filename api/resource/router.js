@@ -1,28 +1,35 @@
 // build your `/api/resources` router here
 const express = require('express');
-const { resource } = require('../server');
-const appResource = express();
+const { getResources, addResource } = require('./model');
+const appResource = express.Router();
 
 appResource.use(express.json());
 
-let resources = [];
 
-appResource.post('/api/resources', (req, res) => {
+appResource.get('/', (req, res) => {
+    getResources()
+        .then(resources => {
+            res.status(200).json(resources)
+        }) 
+        .catch(err => {
+            console.error(err)
+            res.status(500).json({message: "Error getting resources"})
+        })
+});
+
+appResource.post('/', (req, res) => {
     let resourceName = req.body.resource_name; 
     if (!resourceName) {
         return res.status(400).json({error: 'Rsource name is required'});
     }
     let newResource = {
-        resource_id: resources.length + 1,
+        resource_id: addResource.length + 1,
         resource_name: resourceName,
         resource_description: req.body.resource_description || null
     }
-    resource.push(newResource);
+    addResource.push(newResource);
     res.status(201).json(newResource);
 });
 
-appResource.get('/api/resources', (req, res) => {
-    res.status(200).json(resources);
-});
 
 module.exports = appResource;
