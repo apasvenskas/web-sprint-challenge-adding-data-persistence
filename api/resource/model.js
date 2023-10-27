@@ -7,9 +7,14 @@ function getResources() {
     .select(['resource_id', 'resource_name', 'resource_description'])
 }
 
-function addResource(resources) {
-    return db('resources').insert(resources).returning('*');
-}
+function addResource(currentResource) {
+    // return db('resources').insert(currentResource).returning('*');
+    // function insert(resource) {
+        return db("resources")
+          .insert(currentResource, "resource_id")
+          .then(([resource_id]) => db("resources").where({ resource_id }).first());
+      } 
+
 
 module.exports = {
     getResources,

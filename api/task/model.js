@@ -2,7 +2,6 @@
 const db = require("../../data/dbConfig");
 
 function getTasks() {
-    console.log(db('tasks'));
   return db("tasks")
     .join("projects", "tasks.project_id", "projects.project_id")
     .select([
@@ -16,17 +15,28 @@ function getTasks() {
     ]);
 }
 
-function getByTaskId(id) {
-  return db("task").where({ id }).first();
+async function getByTaskId(id) {
+  try {
+    const task = await db("tasks").where({ id }).first();
+    console.log("task", task);
+    return task;
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 async function addTask(task) {
-  const [id] = await db("task").insert(task);
-  return addTask(id);
+  try {
+    const [id] = await db("tasks").insert(task);
+    console.log(id);
+    return getByTaskId(id);
+  } catch (err) {
+    console.error(err);
+    }
 }
-
+ 
 module.exports = {
   getTasks,
-  getByTaskId,
+  // getByTaskId,
   addTask,
 };
