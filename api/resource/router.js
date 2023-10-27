@@ -28,7 +28,13 @@ appResource.post('/', (req, res, next) => {
       } else {
         next({ status: 400, message: 'Please provide a name for the resource' })
       }
-    // let newResource = {
+  
+});
+
+
+module.exports = appResource;
+
+  // let newResource = {
     //     // resource_id: addResource.length + 1,
     //     resource_name: resourceName,
     //     resource_description: resourceDescription || null
@@ -39,7 +45,3 @@ appResource.post('/', (req, res, next) => {
     // }).catch(error => {
     //     res.status(500).json({error: error.message})
     // })
-});
-
-
-module.exports = appResource;

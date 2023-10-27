@@ -8,11 +8,12 @@ function getResources() {
 }
 
 function addResource(currentResource) {
-    // return db('resources').insert(currentResource).returning('*');
-    // function insert(resource) {
+        // return db("resources")
+        //   .insert(currentResource, "resource_id")
+        //   .then(([resource_id]) => db("currentResource").where({ resource_id }).first());
         return db("resources")
-          .insert(currentResource, "resource_id")
-          .then(([resource_id]) => db("resources").where({ resource_id }).first());
+         .insert(currentResource)
+         .then(() => currentResource)
       } 
 
 
