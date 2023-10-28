@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
     .then(projects => {
       let finalProjects = projects.map(project => ({
         ...project,
-        project_completed:!!projects.project_completed,
+        project_completed:!!project.project_completed,
       }));
       res.status(200).json(finalProjects);
     })
