@@ -15,21 +15,29 @@ function getTasks() {
     ]);
 }
 
-async function getByTaskId(id) {
-  try {
-    const task = await db("tasks").where({ id }).first();
-    console.log("task", task);
-    return task;
-  } catch (err) {
-    console.error(err);
-  }
+function getByTaskId(task_id) {
+  return db("tasks")
+    .where({ task_id })
+    .first()
+    .then((task) => {
+      if (task) {
+        return { ...task, task_completed: !!task.task_completed }; 
+      } else {
+        return null;
+      }
+    });
 }
 
 async function addTask(task) {
   try {
-    const [id] = await db("tasks").insert(task);
-    console.log(id);
-    return getByTaskId(id);
+    const [id] = await db("tasks").insert(task)
+    console.log(id)
+    const newTask = await getByTaskId(id)
+    if (newTask) {
+      return newTask;
+    } else {
+      return null;
+    }
   } catch (err) {
     console.error(err);
     }

@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
       newProject.project_completed = false;
     }
     const project = await addProject(newProject);
-    res.status(201).json([project])
+    res.status(201).json(project)
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
